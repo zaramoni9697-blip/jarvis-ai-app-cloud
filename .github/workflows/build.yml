@@ -34,6 +34,57 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
 
+
+      - name: Find legacy Android embedding plugins
+        shell: bash
+        run: |
+          echo "Checking Flutter plugins..."
+
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          import re
+
+          file = Path(".flutter-plugins-dependencies")
+          if not file.exists():
+              print("Plugin dependency file not found")
+              raise SystemExit(0)
+
+          data = json.loads(file.read_text())
+          plugins = data.get("plugins", {}).get("android", [])
+
+          patterns = [
+              r"io\.flutter\.app",
+              r"PluginRegistry\.Registrar",
+              r"registerWith\s*\("
+          ]
+
+          for plugin in plugins:
+              name = plugin.get("name", "unknown")
+              root = Path(plugin.get("path", "")) / "android" / "src" / "main"
+
+              print(f"\nPLUGIN: {name}")
+
+              if not root.exists():
+                  continue
+
+              for source in root.rglob("*"):
+                  if source.suffix not in (".java", ".kt"):
+                      continue
+
+                  try:
+                      lines = source.read_text(errors="ignore").splitlines()
+                      for number, line in enumerate(lines, 1):
+                          if any(re.search(p, line) for p in patterns):
+                              print(f"LEGACY: {source}:{number}: {line.strip()}")
+                  except Exception:
+                      pass
+          PY
+
+      - name: Analyze code
+        run: flutter analyze --no-fatal-infos
+        continue-on-error: true
+
       - name: Analyze code
         run: flutter analyze --no-fatal-infos
         continue-on-error: true
