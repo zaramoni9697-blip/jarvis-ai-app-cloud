@@ -1,0 +1,13 @@
+ফাইল	কাজ
+.github/workflows/build.yml	GitHub Actions APK build
+pubspec.yaml 
+lib/main.dart
+lib/utils/theme.dart	
+lib/services/database_service.dart	
+lib/services/ai_service.dart	
+lib/screens/splash_screen.dart	
+lib/screens/login_screen.dart	
+lib/screens/register_screen.dart	
+lib/screens/home_screen.dart	
+lib/screens/chat_screen.dart	
+lib/screens/api_
