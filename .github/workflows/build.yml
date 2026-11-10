@@ -39,7 +39,7 @@ jobs:
         continue-on-error: true
 
       - name: Build APK (release)
-        run: flutter build apk --release --split-per-abi
+        run: flutter build apk --release --split-per-abi -v
 
       - name: Build APK (universal)
         run: flutter build apk --release
