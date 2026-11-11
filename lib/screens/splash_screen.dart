@@ -138,7 +138,7 @@ class _SplashScreenState extends State<SplashScreen>
             ),
             boxShadow: [
               BoxShadow(
-                color: JarvisTheme.primary.withValues(alpha: 0.4),
+                color: JarvisTheme.primary.withOpacity(0.4),
                 blurRadius: 20,
                 spreadRadius: 5,
               ),
