@@ -33,18 +33,15 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() => _errorMsg = 'ইমেইল এবং পাসওয়ার্ড দিন।');
       return;
     }
-
     setState(() {
       _loading = true;
       _errorMsg = null;
     });
-
     try {
       final profile = await DatabaseService.authenticateProfile(
         email: _emailCtrl.text,
         password: _passCtrl.text,
       );
-
       if (profile == null) {
         setState(() {
           _errorMsg = 'ইমেইল বা পাসওয়ার্ড ভুল।';
@@ -52,7 +49,6 @@ class _LoginScreenState extends State<LoginScreen> {
         });
         return;
       }
-
       if (_rememberSession) {
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('active_session', jsonEncode({
@@ -61,7 +57,6 @@ class _LoginScreenState extends State<LoginScreen> {
           'email': profile['email'],
         }));
       }
-
       if (!mounted) return;
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (_) => const HomeScreen()),
@@ -106,7 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             border: Border.all(
-              color: JarvisTheme.primary.withOpacity(0.4),
+              color: JarvisTheme.primary.withValues(alpha: 0.4),
               width: 2,
             ),
           ),
@@ -116,33 +111,36 @@ class _LoginScreenState extends State<LoginScreen> {
               height: 60,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: JarvisTheme.primary.withOpacity(0.1),
+                color: JarvisTheme.primary.withValues(alpha: 0.1),
                 border: Border.all(color: JarvisTheme.primary, width: 2),
                 boxShadow: [
                   BoxShadow(
-                    color: JarvisTheme.primary.withOpacity(0.3),
+                    color: JarvisTheme.primary.withValues(alpha: 0.3),
                     blurRadius: 20,
                     spreadRadius: 5,
                   ),
                 ],
               ),
-              child: const Icon(Icons.add, color: JarvisTheme.primary, size: 30),
+              child: const Icon(Icons.add,
+                  color: JarvisTheme.primary, size: 30),
             ),
           ),
         ),
         const SizedBox(height: 20),
         Text(
           'JARVIS ACCESS PORTAL',
-          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                fontSize: 20,
-              ),
+          style: Theme.of(context)
+              .textTheme
+              .headlineMedium
+              ?.copyWith(fontSize: 20),
         ),
         const SizedBox(height: 4),
         Text(
           'LOCAL DEVICE AUTHENTICATION MATRIX',
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                letterSpacing: 1.5,
-              ),
+          style: Theme.of(context)
+              .textTheme
+              .bodyMedium
+              ?.copyWith(letterSpacing: 1.5),
         ),
       ],
     );
@@ -173,7 +171,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(
-                    'LOCAL AUTHENTICATION: Profile records reside strictly in encrypted on-device SQLite storage. Not a cloud account. No server identity or password recovery.',
+                    'LOCAL AUTHENTICATION: Profile records reside strictly '
+                    'in encrypted on-device SQLite storage. Not a cloud account. '
+                    'No server identity or password recovery.',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           fontSize: 11,
                           height: 1.5,
@@ -211,13 +211,12 @@ class _LoginScreenState extends State<LoginScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'Remember this device session',
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
+              Text('Remember this device session',
+                  style: Theme.of(context).textTheme.bodyLarge),
               Switch(
                 value: _rememberSession,
-                onChanged: (v) => setState(() => _rememberSession = v),
+                onChanged: (v) =>
+                    setState(() => _rememberSession = v),
                 activeColor: JarvisTheme.primary,
               ),
             ],
@@ -227,13 +226,15 @@ class _LoginScreenState extends State<LoginScreen> {
             Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: JarvisTheme.error.withOpacity(0.1),
+                color: JarvisTheme.error.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: JarvisTheme.error.withOpacity(0.4)),
+                border: Border.all(
+                    color: JarvisTheme.error.withValues(alpha: 0.4)),
               ),
               child: Text(
                 _errorMsg!,
-                style: const TextStyle(color: JarvisTheme.error, fontSize: 12),
+                style: const TextStyle(
+                    color: JarvisTheme.error, fontSize: 12),
               ),
             ),
             const SizedBox(height: 8),
@@ -247,9 +248,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: 20,
                       width: 20,
                       child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        color: Colors.black,
-                      ),
+                          strokeWidth: 2, color: Colors.black),
                     )
                   : const Text('AUTHENTICATE // ACCESS JARVIS'),
             ),
@@ -263,10 +262,8 @@ class _LoginScreenState extends State<LoginScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(
-          'No profile on this device? ',
-          style: Theme.of(context).textTheme.bodyMedium,
-        ),
+        Text('No profile on this device? ',
+            style: Theme.of(context).textTheme.bodyMedium),
         GestureDetector(
           onTap: () => Navigator.of(context).push(
             MaterialPageRoute(builder: (_) => const RegisterScreen()),
@@ -274,9 +271,7 @@ class _LoginScreenState extends State<LoginScreen> {
           child: const Text(
             'Create Profile',
             style: TextStyle(
-              color: JarvisTheme.primary,
-              fontWeight: FontWeight.bold,
-            ),
+                color: JarvisTheme.primary, fontWeight: FontWeight.bold),
           ),
         ),
       ],
