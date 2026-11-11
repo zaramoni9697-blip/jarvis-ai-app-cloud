@@ -18,7 +18,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _emailCtrl = TextEditingController();
   final _passCtrl = TextEditingController();
   final _confirmCtrl = TextEditingController();
-  
+
   bool _showPass = false;
   bool _showConfirm = false;
   bool _rememberSession = true;
@@ -40,12 +40,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
       setState(() => _errorMsg = 'পাসওয়ার্ড মিলছে না।');
       return;
     }
-
     setState(() {
       _loading = true;
       _errorMsg = null;
     });
-
     try {
       final exists = await DatabaseService.emailExists(_emailCtrl.text);
       if (exists) {
@@ -55,14 +53,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
         });
         return;
       }
-
       final id = await DatabaseService.createProfile(
         fullName: _nameCtrl.text.trim(),
         email: _emailCtrl.text.trim(),
         password: _passCtrl.text,
         rememberSession: _rememberSession,
       );
-
       if (_rememberSession) {
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('active_session', jsonEncode({
@@ -71,7 +67,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
           'email': _emailCtrl.text.trim(),
         }));
       }
-
       if (!mounted) return;
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (_) => const HomeScreen()),
@@ -122,12 +117,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             border: Border.all(
-              color: JarvisTheme.primary.withOpacity(0.5),
+              color: JarvisTheme.primary.withValues(alpha: 0.5),
               width: 2,
             ),
             gradient: RadialGradient(
               colors: [
-                JarvisTheme.primary.withOpacity(0.15),
+                JarvisTheme.primary.withValues(alpha: 0.15),
                 Colors.transparent,
               ],
             ),
@@ -139,16 +134,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ),
         ),
         const SizedBox(height: 16),
-        Text(
-          'NEW LOCAL PROFILE',
-          style: Theme.of(context).textTheme.headlineMedium,
-        ),
+        Text('NEW LOCAL PROFILE',
+            style: Theme.of(context).textTheme.headlineMedium),
         const SizedBox(height: 4),
         Text(
           'INITIALIZE ISOLATED ON-DEVICE USER',
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                letterSpacing: 1.5,
-              ),
+          style: Theme.of(context)
+              .textTheme
+              .bodyMedium
+              ?.copyWith(letterSpacing: 1.5),
         ),
       ],
     );
@@ -165,11 +159,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Icon(Icons.info_outline, color: JarvisTheme.primary, size: 18),
+          const Icon(Icons.info_outline,
+              color: JarvisTheme.primary, size: 18),
           const SizedBox(width: 12),
           Expanded(
             child: Text(
-              'LOCAL-ONLY REGISTRATION: This account is created and stored exclusively on your device. It does not sync to cloud servers. Password is protected with salted SHA-256 hashing.',
+              'LOCAL-ONLY REGISTRATION: This account is created and stored '
+              'exclusively on your device. It does not sync to cloud servers. '
+              'Password is protected with salted SHA-256 hashing.',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     fontSize: 11,
                     height: 1.5,
@@ -193,7 +190,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
               hintText: 'Full Name',
               prefixIcon: Icon(Icons.badge_outlined),
             ),
-            validator: (v) => (v?.trim().isEmpty ?? true) ? 'নাম দিন' : null,
+            validator: (v) =>
+                (v?.trim().isEmpty ?? true) ? 'নাম দিন' : null,
           ),
           const SizedBox(height: 16),
           TextFormField(
@@ -219,10 +217,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
               hintText: 'Master Password (min 6 chars)',
               prefixIcon: const Icon(Icons.lock_outline),
               suffixIcon: IconButton(
-                icon: Icon(
-                  _showPass ? Icons.visibility_off : Icons.visibility_off_outlined,
-                ),
-                onPressed: () => setState(() => _showPass = !_showPass),
+                icon: Icon(_showPass
+                    ? Icons.visibility_off
+                    : Icons.visibility_off_outlined),
+                onPressed: () =>
+                    setState(() => _showPass = !_showPass),
               ),
             ),
             validator: (v) =>
@@ -242,19 +241,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     setState(() => _showConfirm = !_showConfirm),
               ),
             ),
-            validator: (v) => v != _passCtrl.text ? 'পাসওয়ার্ড মিলছে না' : null,
+            validator: (v) =>
+                v != _passCtrl.text ? 'পাসওয়ার্ড মিলছে না' : null,
           ),
           const SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'Remember this device session',
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
+              Text('Remember this device session',
+                  style: Theme.of(context).textTheme.bodyLarge),
               Switch(
                 value: _rememberSession,
-                onChanged: (v) => setState(() => _rememberSession = v),
+                onChanged: (v) =>
+                    setState(() => _rememberSession = v),
                 activeColor: JarvisTheme.primary,
               ),
             ],
@@ -268,18 +267,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: JarvisTheme.error.withOpacity(0.1),
+        color: JarvisTheme.error.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: JarvisTheme.error.withOpacity(0.5)),
+        border: Border.all(color: JarvisTheme.error.withValues(alpha: 0.5)),
       ),
       child: Row(
         children: [
-          const Icon(Icons.error_outline, color: JarvisTheme.error, size: 18),
+          const Icon(Icons.error_outline,
+              color: JarvisTheme.error, size: 18),
           const SizedBox(width: 8),
           Expanded(
             child: Text(
               _errorMsg!,
-              style: const TextStyle(color: JarvisTheme.error, fontSize: 13),
+              style: const TextStyle(
+                  color: JarvisTheme.error, fontSize: 13),
             ),
           ),
         ],
@@ -297,9 +298,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 height: 20,
                 width: 20,
                 child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  color: Colors.black,
-                ),
+                    strokeWidth: 2, color: Colors.black),
               )
             : const Text('CREATE LOCAL PROFILE'),
       ),
@@ -310,18 +309,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(
-          'Already have a profile on this device? ',
-          style: Theme.of(context).textTheme.bodyMedium,
-        ),
+        Text('Already have a profile on this device? ',
+            style: Theme.of(context).textTheme.bodyMedium),
         GestureDetector(
           onTap: () => Navigator.of(context).pop(),
           child: const Text(
             'Log In',
             style: TextStyle(
-              color: JarvisTheme.primary,
-              fontWeight: FontWeight.bold,
-            ),
+                color: JarvisTheme.primary, fontWeight: FontWeight.bold),
           ),
         ),
       ],
