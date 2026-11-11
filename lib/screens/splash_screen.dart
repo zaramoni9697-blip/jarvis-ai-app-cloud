@@ -94,7 +94,7 @@ class _SplashScreenState extends State<SplashScreen>
                     height: 48,
                     child: CircularProgressIndicator(
                       valueColor: AlwaysStoppedAnimation<Color>(
-                        JarvisTheme.primary.withValues(alpha: 0.7),
+                        JarvisTheme.primary.withOpacity(0.7),
                       ),
                       strokeWidth: 2,
                     ),
