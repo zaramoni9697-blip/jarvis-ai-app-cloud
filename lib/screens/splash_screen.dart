@@ -38,9 +38,9 @@ class _SplashScreenState extends State<SplashScreen>
     await Future.delayed(const Duration(milliseconds: 2000));
     final prefs = await SharedPreferences.getInstance();
     final sessionData = prefs.getString('active_session');
-    
+
     if (!mounted) return;
-    
+
     if (sessionData != null) {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (_) => const HomeScreen()),
@@ -94,7 +94,7 @@ class _SplashScreenState extends State<SplashScreen>
                     height: 48,
                     child: CircularProgressIndicator(
                       valueColor: AlwaysStoppedAnimation<Color>(
-                        JarvisTheme.primary.withOpacity(0.7),
+                        JarvisTheme.primary.withValues(alpha: 0.7),
                       ),
                       strokeWidth: 2,
                     ),
@@ -114,10 +114,13 @@ class _SplashScreenState extends State<SplashScreen>
       height: 120,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        border: Border.all(color: JarvisTheme.primary.withOpacity(0.3), width: 2),
+        border: Border.all(
+          color: JarvisTheme.primary.withValues(alpha: 0.3),
+          width: 2,
+        ),
         gradient: RadialGradient(
           colors: [
-            JarvisTheme.primary.withOpacity(0.2),
+            JarvisTheme.primary.withValues(alpha: 0.2),
             JarvisTheme.background,
           ],
         ),
@@ -128,14 +131,14 @@ class _SplashScreenState extends State<SplashScreen>
           height: 70,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: JarvisTheme.primary.withOpacity(0.1),
+            color: JarvisTheme.primary.withValues(alpha: 0.1),
             border: Border.all(
               color: JarvisTheme.primary,
               width: 2,
             ),
             boxShadow: [
               BoxShadow(
-                color: JarvisTheme.primary.withOpacity(0.4),
+                color: JarvisTheme.primary.withValues(alpha: 0.4),
                 blurRadius: 20,
                 spreadRadius: 5,
               ),
