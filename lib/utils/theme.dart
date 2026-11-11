@@ -24,11 +24,9 @@ class JarvisTheme {
         primary: primary,
         secondary: secondary,
         surface: surface,
-        background: background,
         onPrimary: Colors.black,
         onSecondary: Colors.white,
         onSurface: textPrimary,
-        onBackground: textPrimary,
       ),
       textTheme: GoogleFonts.spaceMonoTextTheme(
         const TextTheme(
