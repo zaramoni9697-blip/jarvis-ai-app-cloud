@@ -131,7 +131,7 @@ class _SplashScreenState extends State<SplashScreen>
           height: 70,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: JarvisTheme.primary.withValues(alpha: 0.1),
+            color: JarvisTheme.primary.withOpacity(0.1),
             border: Border.all(
               color: JarvisTheme.primary,
               width: 2,
