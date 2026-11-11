@@ -115,7 +115,7 @@ class _SplashScreenState extends State<SplashScreen>
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         border: Border.all(
-          color: JarvisTheme.primary.withValues(alpha: 0.3),
+          color: JarvisTheme.primary.withOpacity(0.3),
           width: 2,
         ),
         gradient: RadialGradient(
