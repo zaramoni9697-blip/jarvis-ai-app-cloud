@@ -22,7 +22,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.24.5'
+          flutter-version: '3.27.0'
           channel: 'stable'
           cache: true
 
@@ -37,7 +37,6 @@ jobs:
           echo "flutter.versionName=1.0.0" >> android/local.properties
           echo "flutter.minSdkVersion=21" >> android/local.properties
           echo "flutter.targetSdkVersion=34" >> android/local.properties
-          cat android/local.properties
 
       - name: Flutter pub get
         run: flutter pub get
