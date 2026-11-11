@@ -134,12 +134,12 @@ class _HomeScreenState extends State<HomeScreen>
         return _buildHome();
       case 1:
         return const Center(
-          child: Text('Vision', style: TextStyle(color: JarvisTheme.textPrimary)),
-        );
+            child: Text('Vision',
+                style: TextStyle(color: JarvisTheme.textPrimary)));
       case 2:
         return const Center(
-          child: Text('Skills', style: TextStyle(color: JarvisTheme.textPrimary)),
-        );
+            child: Text('Skills',
+                style: TextStyle(color: JarvisTheme.textPrimary)));
       case 3:
         return const ChatScreen();
       default:
@@ -150,7 +150,6 @@ class _HomeScreenState extends State<HomeScreen>
   Widget _buildHome() {
     return Column(
       children: [
-        // Weather & Date bar
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Row(
@@ -199,22 +198,16 @@ class _HomeScreenState extends State<HomeScreen>
             ],
           ),
         ),
-
-        // Voice orb
         Expanded(
           child: Center(
             child: GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => const ChatScreen()),
-                );
-              },
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const ChatScreen()),
+              ),
               child: AnimatedBuilder(
                 animation: _pulseAnim,
-                builder: (_, child) => Transform.scale(
-                  scale: _pulseAnim.value,
-                  child: child,
-                ),
+                builder: (_, child) =>
+                    Transform.scale(scale: _pulseAnim.value, child: child),
                 child: Container(
                   width: 200,
                   height: 200,
@@ -222,19 +215,19 @@ class _HomeScreenState extends State<HomeScreen>
                     shape: BoxShape.circle,
                     gradient: RadialGradient(
                       colors: [
-                        JarvisTheme.secondary.withOpacity(0.6),
-                        JarvisTheme.primary.withOpacity(0.3),
+                        JarvisTheme.secondary.withValues(alpha: 0.6),
+                        JarvisTheme.primary.withValues(alpha: 0.3),
                         Colors.transparent,
                       ],
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: JarvisTheme.primary.withOpacity(0.3),
+                        color: JarvisTheme.primary.withValues(alpha: 0.3),
                         blurRadius: 40,
                         spreadRadius: 10,
                       ),
                       BoxShadow(
-                        color: JarvisTheme.secondary.withOpacity(0.2),
+                        color: JarvisTheme.secondary.withValues(alpha: 0.2),
                         blurRadius: 60,
                         spreadRadius: 20,
                       ),
@@ -245,7 +238,6 @@ class _HomeScreenState extends State<HomeScreen>
             ),
           ),
         ),
-
         const Text(
           'Tap the voice button to start',
           style: TextStyle(color: JarvisTheme.textSecondary),
@@ -258,7 +250,7 @@ class _HomeScreenState extends State<HomeScreen>
   Widget _buildNavBar() {
     return NavigationBar(
       backgroundColor: JarvisTheme.surface,
-      indicatorColor: JarvisTheme.primary.withOpacity(0.2),
+      indicatorColor: JarvisTheme.primary.withValues(alpha: 0.2),
       selectedIndex: _currentIndex,
       onDestinationSelected: (i) => setState(() => _currentIndex = i),
       destinations: const [
