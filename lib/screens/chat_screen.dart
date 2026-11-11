@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
-import 'dart:math';
 import '../utils/theme.dart';
 import '../services/ai_service.dart';
 import '../services/database_service.dart';
@@ -35,15 +34,10 @@ class _ChatScreenState extends State<ChatScreen> {
     if (data != null) {
       final session = jsonDecode(data);
       _profileId = session['profile_id'] as int;
-      
-      // Load API key
       final apiKey = await DatabaseService.getApiKey(_profileId!, 'gemini');
       if (apiKey != null) {
         _ai = AIService(
-          apiKey: apiKey,
-          provider: 'gemini',
-          model: 'gemini-1.5-flash',
-        );
+            apiKey: apiKey, provider: 'gemini', model: 'gemini-1.5-flash');
       } else {
         _ai = AIService(apiKey: '', provider: 'autonomous');
       }
@@ -53,37 +47,31 @@ class _ChatScreenState extends State<ChatScreen> {
   Future<void> _sendMessage() async {
     final text = _msgCtrl.text.trim();
     if (text.isEmpty || _loading) return;
-
     _msgCtrl.clear();
     setState(() {
       _messages.add({'role': 'user', 'content': text});
       _loading = true;
     });
     _scrollDown();
-
     try {
       final response = await _ai!.chat(
         messages: _messages,
         systemPrompt: 'You are Jarvis, an intelligent AI assistant. '
             'Be helpful, concise, and smart. '
-            'You can respond in Bengali or English based on the user\'s language.',
+            'Respond in Bengali or English based on the user\'s language.',
       );
-
       if (_profileId != null) {
         await DatabaseService.saveChatMessage(
-          profileId: _profileId!,
-          sessionId: _sessionId!,
-          role: 'user',
-          content: text,
-        );
+            profileId: _profileId!,
+            sessionId: _sessionId!,
+            role: 'user',
+            content: text);
         await DatabaseService.saveChatMessage(
-          profileId: _profileId!,
-          sessionId: _sessionId!,
-          role: 'assistant',
-          content: response,
-        );
+            profileId: _profileId!,
+            sessionId: _sessionId!,
+            role: 'assistant',
+            content: response);
       }
-
       setState(() {
         _messages.add({'role': 'assistant', 'content': response});
         _loading = false;
@@ -129,10 +117,7 @@ class _ChatScreenState extends State<ChatScreen> {
         title: const Text(
           'JARVIS CHAT',
           style: TextStyle(
-            color: JarvisTheme.primary,
-            letterSpacing: 2,
-            fontSize: 16,
-          ),
+              color: JarvisTheme.primary, letterSpacing: 2, fontSize: 16),
         ),
         actions: [
           IconButton(
@@ -177,14 +162,15 @@ class _ChatScreenState extends State<ChatScreen> {
           Icon(
             Icons.chat_bubble_outline,
             size: 64,
-            color: JarvisTheme.primary.withOpacity(0.3),
+            color: JarvisTheme.primary.withValues(alpha: 0.3),
           ),
           const SizedBox(height: 16),
           Text(
             'Ask Jarvis anything...',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: JarvisTheme.textSecondary,
-                ),
+            style: Theme.of(context)
+                .textTheme
+                .titleLarge
+                ?.copyWith(color: JarvisTheme.textSecondary),
           ),
         ],
       ),
@@ -206,11 +192,12 @@ class _ChatScreenState extends State<ChatScreen> {
               height: 32,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: JarvisTheme.primary.withOpacity(0.2),
-                border: Border.all(color: JarvisTheme.primary.withOpacity(0.5)),
+                color: JarvisTheme.primary.withValues(alpha: 0.2),
+                border: Border.all(
+                    color: JarvisTheme.primary.withValues(alpha: 0.5)),
               ),
-              child: const Icon(Icons.add,
-                  color: JarvisTheme.primary, size: 16),
+              child:
+                  const Icon(Icons.add, color: JarvisTheme.primary, size: 16),
             ),
             const SizedBox(width: 8),
           ],
@@ -219,7 +206,7 @@ class _ChatScreenState extends State<ChatScreen> {
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
                 color: isUser
-                    ? JarvisTheme.primary.withOpacity(0.15)
+                    ? JarvisTheme.primary.withValues(alpha: 0.15)
                     : JarvisTheme.surfaceVariant,
                 borderRadius: BorderRadius.only(
                   topLeft: const Radius.circular(16),
@@ -229,14 +216,15 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
                 border: Border.all(
                   color: isUser
-                      ? JarvisTheme.primary.withOpacity(0.3)
+                      ? JarvisTheme.primary.withValues(alpha: 0.3)
                       : JarvisTheme.border,
                 ),
               ),
               child: Text(
                 msg['content'] ?? '',
                 style: TextStyle(
-                  color: isUser ? JarvisTheme.primary : JarvisTheme.textPrimary,
+                  color:
+                      isUser ? JarvisTheme.primary : JarvisTheme.textPrimary,
                   fontSize: 14,
                   height: 1.5,
                 ),
@@ -258,14 +246,15 @@ class _ChatScreenState extends State<ChatScreen> {
             height: 32,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: JarvisTheme.primary.withOpacity(0.2),
+              color: JarvisTheme.primary.withValues(alpha: 0.2),
             ),
-            child: const Icon(Icons.add,
-                color: JarvisTheme.primary, size: 16),
+            child:
+                const Icon(Icons.add, color: JarvisTheme.primary, size: 16),
           ),
           const SizedBox(width: 8),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: BoxDecoration(
               color: JarvisTheme.surfaceVariant,
               borderRadius: BorderRadius.circular(16),
@@ -294,11 +283,9 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget _buildInput() {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: JarvisTheme.surface,
-        border: const Border(
-          top: BorderSide(color: JarvisTheme.border),
-        ),
+        border: Border(top: BorderSide(color: JarvisTheme.border)),
       ),
       child: Row(
         children: [
@@ -308,7 +295,8 @@ class _ChatScreenState extends State<ChatScreen> {
               style: const TextStyle(color: JarvisTheme.textPrimary),
               decoration: InputDecoration(
                 hintText: 'Ask Jarvis anything...',
-                hintStyle: const TextStyle(color: JarvisTheme.textSecondary),
+                hintStyle:
+                    const TextStyle(color: JarvisTheme.textSecondary),
                 filled: true,
                 fillColor: JarvisTheme.surfaceVariant,
                 border: OutlineInputBorder(
@@ -321,13 +309,11 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(24),
-                  borderSide:
-                      const BorderSide(color: JarvisTheme.primary, width: 1.5),
+                  borderSide: const BorderSide(
+                      color: JarvisTheme.primary, width: 1.5),
                 ),
                 contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 12,
-                ),
+                    horizontal: 20, vertical: 12),
               ),
               onSubmitted: (_) => _sendMessage(),
               maxLines: null,
@@ -344,13 +330,14 @@ class _ChatScreenState extends State<ChatScreen> {
                 color: JarvisTheme.primary,
                 boxShadow: [
                   BoxShadow(
-                    color: JarvisTheme.primary.withOpacity(0.4),
+                    color: JarvisTheme.primary.withValues(alpha: 0.4),
                     blurRadius: 10,
                     spreadRadius: 2,
                   ),
                 ],
               ),
-              child: const Icon(Icons.send, color: Colors.black, size: 20),
+              child:
+                  const Icon(Icons.send, color: Colors.black, size: 20),
             ),
           ),
         ],
