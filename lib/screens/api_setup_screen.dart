@@ -32,8 +32,6 @@ class _ApiSetupScreenState extends State<ApiSetupScreen> {
     if (data != null) {
       final session = jsonDecode(data);
       _profileId = session['profile_id'] as int;
-      
-      // Load existing key
       final key = await DatabaseService.getApiKey(_profileId!, 'gemini');
       if (key != null) {
         _keyCtrl.text = key;
@@ -49,7 +47,6 @@ class _ApiSetupScreenState extends State<ApiSetupScreen> {
       _status = 'Verifying...';
       _verified = false;
     });
-
     final ok = await AIService.verifyGeminiKey(_keyCtrl.text.trim());
     setState(() {
       _loading = false;
@@ -61,19 +58,16 @@ class _ApiSetupScreenState extends State<ApiSetupScreen> {
   Future<void> _saveKey() async {
     if (_keyCtrl.text.trim().isEmpty || _profileId == null) return;
     setState(() => _loading = true);
-
     await DatabaseService.saveApiKey(
       profileId: _profileId!,
       provider: 'gemini',
       apiKey: _keyCtrl.text.trim(),
       model: 'gemini-1.5-flash',
     );
-
     setState(() {
       _loading = false;
       _status = '✓ Key saved to encrypted local storage!';
     });
-
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
@@ -133,7 +127,6 @@ class _ApiSetupScreenState extends State<ApiSetupScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Profile card
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -155,16 +148,13 @@ class _ApiSetupScreenState extends State<ApiSetupScreen> {
                               ),
                         ),
                         const SizedBox(height: 4),
-                        Text(
-                          'Jarvis User',
-                          style: Theme.of(context).textTheme.titleLarge,
-                        ),
+                        Text('Jarvis User',
+                            style: Theme.of(context).textTheme.titleLarge),
                       ],
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 6),
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                     decoration: BoxDecoration(
                       color: JarvisTheme.secondary,
                       borderRadius: BorderRadius.circular(6),
@@ -183,12 +173,11 @@ class _ApiSetupScreenState extends State<ApiSetupScreen> {
               ),
             ),
             const SizedBox(height: 20),
-
-            // Provider card
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                border: Border.all(color: JarvisTheme.primary.withOpacity(0.5)),
+                border: Border.all(
+                    color: JarvisTheme.primary.withValues(alpha: 0.5)),
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Column(
@@ -200,7 +189,7 @@ class _ApiSetupScreenState extends State<ApiSetupScreen> {
                         width: 40,
                         height: 40,
                         decoration: BoxDecoration(
-                          color: Colors.blue.withOpacity(0.2),
+                          color: Colors.blue.withValues(alpha: 0.2),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: const Icon(Icons.auto_awesome,
@@ -229,7 +218,7 @@ class _ApiSetupScreenState extends State<ApiSetupScreen> {
                       Container(
                         padding: const EdgeInsets.all(4),
                         decoration: BoxDecoration(
-                          color: JarvisTheme.success.withOpacity(0.2),
+                          color: JarvisTheme.success.withValues(alpha: 0.2),
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: const Text(
@@ -247,17 +236,17 @@ class _ApiSetupScreenState extends State<ApiSetupScreen> {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'Your API key is used exclusively for requests initiated by this profile. It is encrypted in AES-256-GCM and never transmitted to any shared servers or logging services.',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          height: 1.5,
-                        ),
+                    'Your API key is used exclusively for requests initiated by this profile. '
+                    'It is encrypted in AES-256-GCM and never transmitted to any shared servers.',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.copyWith(height: 1.5),
                   ),
                 ],
               ),
             ),
             const SizedBox(height: 24),
-
-            // Key input
             Text(
               'ENTER GOOGLE GEMINI API KEY',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -294,19 +283,18 @@ class _ApiSetupScreenState extends State<ApiSetupScreen> {
               ),
             ),
             const SizedBox(height: 12),
-
             if (_status != null)
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   color: _verified
-                      ? JarvisTheme.success.withOpacity(0.1)
-                      : JarvisTheme.error.withOpacity(0.1),
+                      ? JarvisTheme.success.withValues(alpha: 0.1)
+                      : JarvisTheme.error.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(
                     color: _verified
-                        ? JarvisTheme.success.withOpacity(0.4)
-                        : JarvisTheme.error.withOpacity(0.4),
+                        ? JarvisTheme.success.withValues(alpha: 0.4)
+                        : JarvisTheme.error.withValues(alpha: 0.4),
                   ),
                 ),
                 child: Text(
@@ -317,7 +305,6 @@ class _ApiSetupScreenState extends State<ApiSetupScreen> {
                   ),
                 ),
               ),
-
             const SizedBox(height: 12),
             Row(
               children: [
@@ -329,14 +316,14 @@ class _ApiSetupScreenState extends State<ApiSetupScreen> {
                       foregroundColor: JarvisTheme.textPrimary,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(14),
-                      ),
+                          borderRadius: BorderRadius.circular(14)),
                     ),
                     child: _loading
                         ? const SizedBox(
                             height: 18,
                             width: 18,
-                            child: CircularProgressIndicator(strokeWidth: 2),
+                            child:
+                                CircularProgressIndicator(strokeWidth: 2),
                           )
                         : const Text('Verify Key'),
                   ),
@@ -350,8 +337,7 @@ class _ApiSetupScreenState extends State<ApiSetupScreen> {
                       foregroundColor: JarvisTheme.textPrimary,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(14),
-                      ),
+                          borderRadius: BorderRadius.circular(14)),
                     ),
                     child: const Text('Save Key'),
                   ),
@@ -359,8 +345,6 @@ class _ApiSetupScreenState extends State<ApiSetupScreen> {
               ],
             ),
             const SizedBox(height: 20),
-
-            // Skip option
             GestureDetector(
               onTap: () => Navigator.of(context).pop(),
               child: Container(
@@ -381,8 +365,6 @@ class _ApiSetupScreenState extends State<ApiSetupScreen> {
               ),
             ),
             const SizedBox(height: 16),
-
-            // Security note
             Container(
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
@@ -402,11 +384,12 @@ class _ApiSetupScreenState extends State<ApiSetupScreen> {
                       children: [
                         Text(
                           'SECURITY GUARANTEE',
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                color: JarvisTheme.primary,
-                                fontSize: 11,
-                                letterSpacing: 1.5,
-                              ),
+                          style:
+                              Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    color: JarvisTheme.primary,
+                                    fontSize: 11,
+                                    letterSpacing: 1.5,
+                                  ),
                         ),
                         const SizedBox(height: 4),
                         Text(
@@ -414,10 +397,11 @@ class _ApiSetupScreenState extends State<ApiSetupScreen> {
                           '• Never sent to external servers\n'
                           '• Direct HTTPS to Google API only\n'
                           '• Deleted with profile permanently',
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                height: 1.6,
-                                fontSize: 11,
-                              ),
+                          style:
+                              Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    height: 1.6,
+                                    fontSize: 11,
+                                  ),
                         ),
                       ],
                     ),
