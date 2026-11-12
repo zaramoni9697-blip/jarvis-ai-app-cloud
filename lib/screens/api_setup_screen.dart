@@ -209,7 +209,7 @@ class _ApiSetupScreenState extends State<ApiSetupScreen> {
                               ),
                             ),
                             Text(
-                              'Model: Gemini 1.5 Flash (Direct HTTPS)',
+                              'Model: Gemini 3.8 Flash (Direct HTTPS)',
                               style: Theme.of(context).textTheme.bodyMedium,
                             ),
                           ],
