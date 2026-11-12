@@ -6,7 +6,9 @@ plugins {
 
 android {
     namespace "com.jarvis.ai"
+
     compileSdk 34
+    ndkVersion "26.1.10909125"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
@@ -19,8 +21,10 @@ android {
 
     defaultConfig {
         applicationId "com.jarvis.ai"
-        minSdk 21
+
+        minSdk 23
         targetSdk 34
+
         versionCode 1
         versionName "1.0.0"
     }
