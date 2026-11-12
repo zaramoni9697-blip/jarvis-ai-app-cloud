@@ -40,6 +40,7 @@ class _ChatScreenState extends State<ChatScreen> {
         apiKey: apiKey,
           provider: 'gemini',
           model: 'gemini-3.8-flash',
+         ) ;
       } else {
         _ai = AIService(apiKey: '', provider: 'autonomous');
       }
