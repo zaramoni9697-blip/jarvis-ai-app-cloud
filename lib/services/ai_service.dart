@@ -9,7 +9,7 @@ class AIService {
   AIService({
     required this.apiKey,
     required this.provider,
-    this.model = 'gemini-1.5-flash',
+    this.model = 'gemini-3.8-flash',
   });
 
   Future<String> chat({
