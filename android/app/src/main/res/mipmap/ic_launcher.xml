@@ -1,18 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
 
-    <style name="LaunchTheme"
-        parent="@android:style/Theme.Light.NoTitleBar">
-        <item name="android:windowBackground">
-            @android:color/white
-        </item>
-    </style>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
 
-    <style name="NormalTheme"
-        parent="@android:style/Theme.Light.NoTitleBar">
-        <item name="android:windowBackground">
-            @android:color/white
-        </item>
-    </style>
+    <path
+        android:fillColor="#101820"
+        android:pathData="M0,0h48v48h-48z"/>
 
-</resources>
+    <path
+        android:fillColor="#00E5FF"
+        android:pathData="M24,6 L37,24 L24,42 L11,24 Z"/>
+
+</vector>
