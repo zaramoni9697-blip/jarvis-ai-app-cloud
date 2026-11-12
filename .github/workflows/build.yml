@@ -35,7 +35,7 @@ jobs:
           echo "sdk.dir=$ANDROID_SDK_ROOT" >> android/local.properties
           echo "flutter.versionCode=1" >> android/local.properties
           echo "flutter.versionName=1.0.0" >> android/local.properties
-          echo "flutter.minSdkVersion=21" >> android/local.properties
+          echo "flutter.minSdkVersion=24" >> android/local.properties
           echo "flutter.targetSdkVersion=34" >> android/local.properties
 
       - name: Flutter pub get
