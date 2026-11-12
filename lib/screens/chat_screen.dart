@@ -37,7 +37,9 @@ class _ChatScreenState extends State<ChatScreen> {
       final apiKey = await DatabaseService.getApiKey(_profileId!, 'gemini');
       if (apiKey != null) {
         _ai = AIService(
-            apiKey: apiKey, provider: 'gemini', model: 'gemini-1.5-flash');
+        apiKey: apiKey,
+          provider: 'gemini',
+          model: 'gemini-3.8-flash',
       } else {
         _ai = AIService(apiKey: '', provider: 'autonomous');
       }
