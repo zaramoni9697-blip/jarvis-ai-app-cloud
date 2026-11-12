@@ -7,7 +7,6 @@
     <application
         android:label="Jarvis AI"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher"
         android:theme="@style/LaunchTheme"
         android:usesCleartextTraffic="false">
         
