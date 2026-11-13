@@ -29,6 +29,11 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+
+        // Required Flutter Maven repository
+        maven {
+            url "https://storage.googleapis.com/download.flutter.io"
+        }
     }
 }
 
