@@ -59,14 +59,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
         password: _passCtrl.text,
         rememberSession: _rememberSession,
       );
-      if (_rememberSession) {
-        final prefs = await SharedPreferences.getInstance();
-        await prefs.setString('active_session', jsonEncode({
-          'profile_id': id,
-          'name': _nameCtrl.text.trim(),
-          'email': _emailCtrl.text.trim(),
-        }));
-      }
+      final prefs = await SharedPreferences.getInstance();
+
+await prefs.setString('active_session', jsonEncode({
+  'profile_id': id,
+  'name': _nameCtrl.text.trim(),
+  'email': _emailCtrl.text.trim(),
+  'remember_session': _rememberSession,
+}));
       if (!mounted) return;
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (_) => const HomeScreen()),
