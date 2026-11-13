@@ -49,14 +49,14 @@ class _LoginScreenState extends State<LoginScreen> {
         });
         return;
       }
-      if (_rememberSession) {
-        final prefs = await SharedPreferences.getInstance();
-        await prefs.setString('active_session', jsonEncode({
-          'profile_id': profile['id'],
-          'name': profile['full_name'],
-          'email': profile['email'],
-        }));
-      }
+      final prefs = await SharedPreferences.getInstance();
+
+await prefs.setString('active_session', jsonEncode({
+  'profile_id': profile['id'],
+  'name': profile['full_name'],
+  'email': profile['email'],
+  'remember_session': _rememberSession,
+}));
       if (!mounted) return;
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (_) => const HomeScreen()),
