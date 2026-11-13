@@ -4,6 +4,8 @@ import '../utils/theme.dart';
 import 'login_screen.dart';
 import 'home_screen.dart';
 
+import 'dart:convert';
+
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -35,21 +37,41 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   Future<void> _checkSession() async {
-    await Future.delayed(const Duration(milliseconds: 2000));
-    final prefs = await SharedPreferences.getInstance();
-    final sessionData = prefs.getString('active_session');
+  await Future.delayed(const Duration(milliseconds: 2000));
 
-    if (!mounted) return;
+  final prefs = await SharedPreferences.getInstance();
+  final sessionData = prefs.getString('active_session');
 
-    if (sessionData != null) {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (_) => const HomeScreen()),
-      );
-    } else {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (_) => const LoginScreen()),
-      );
+  if (!mounted) return;
+
+  if (sessionData != null) {
+    try {
+      final session = jsonDecode(sessionData);
+      final rememberSession =
+          session['remember_session'] == true;
+
+      if (rememberSession) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (_) => const HomeScreen(),
+          ),
+        );
+        return;
+      }
+
+      await prefs.remove('active_session');
+    } catch (_) {
+      await prefs.remove('active_session');
     }
+  }
+
+  if (!mounted) return;
+
+  Navigator.of(context).pushReplacement(
+    MaterialPageRoute(
+      builder: (_) => const LoginScreen(),
+    ),
+  );
   }
 
   @override
